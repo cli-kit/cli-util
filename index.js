@@ -20,7 +20,7 @@ function repeat(len, str) {
  */
 function pad(str, width, leading) {
   var len = Math.max(0, width - str.length);
-  return leading ? repeat(len + 1) + str : str + repeat(len + 1);
+  return leading ? repeat(len) + str : str + repeat(len);
 }
 
 /**
