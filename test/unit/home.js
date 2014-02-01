@@ -6,4 +6,11 @@ describe('cli-util:', function() {
     expect(util.home()).to.be.a('string');
     done();
   });
+  it('should return empty string', function(done) {
+    process.env.HOME = process.env.HOMEPATH
+      = process.env.USERPROFILE = '';
+    expect(util.home()).to.be.a('string').that.eqls('');
+    done();
+  });
+
 })

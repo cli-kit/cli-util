@@ -42,11 +42,12 @@ function camelcase(name, delimiter) {
  *  Attempt to resolve the user's home directory
  *  in a platform independent manner.
  *
- *  @return The user's home directory or undefined if none of the
- *  environment variables are defined.
+ *  @return The user's home directory or the empty string
+ *  if none of the environment variables are defined.
  */
 function home() {
-  return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+  return process.env.HOME || process.env.HOMEPATH
+    || process.env.USERPROFILE || '';
 }
 
 module.exports.repeat = repeat;
