@@ -118,6 +118,7 @@ function merge(source, target, filter) {
       iterate(source, target, k, source[k]);
     }
   }
+  return target;
 }
 
 module.exports.repeat = repeat;
