@@ -41,6 +41,21 @@ function camelcase(name, delimiter) {
 }
 
 /**
+ *  Convert a camelcase string to a delimited string.
+ *
+ *  @param name The string to convert.
+ *  @param delimiter A delimiter, default is hyphen.
+ *  @param lower Whether to lowercase the result.
+ */
+function delimited(name, delimiter, lower) {
+  var re  = /([A-Z]{1,1})/g;
+  delimiter = delimiter || '-';
+  name = name.replace(re, delimiter + '$1');
+  if(lower) name = name.toLowerCase();
+  return name;
+}
+
+/**
  *  Attempt to resolve the user's home directory
  *  in a platform independent manner.
  *
@@ -129,5 +144,6 @@ function merge(source, target, filter) {
 module.exports.repeat = repeat;
 module.exports.pad = pad;
 module.exports.camelcase = camelcase;
+module.exports.delimited = delimited;
 module.exports.home = home;
 module.exports.merge = merge;
