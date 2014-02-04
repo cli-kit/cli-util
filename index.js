@@ -141,9 +141,31 @@ function merge(source, target, filter) {
   return target;
 }
 
+var native = {
+  to: function(str, delimiter, json) {
+    if(str === 'true') return true;
+    if(str === 'false') return false;
+    if(str === 'null') return null;
+    if(str === 'undefined') return undefined;
+    var num = Number(str);
+    if(!isNaN(num)) return num;
+    if(str && delimiter && ~str.indexOf(delimiter)) {
+      return str.split(delimiter);
+    }
+    if(str && json) return JSON.parse(str);
+    return str;
+  },
+  from: function(val, delimiter, json) {
+    if(delimiter && Array.isArray(val)) return val.join(delimiter);
+    if(json && val && (typeof val == 'object')) return JSON.stringify(val);
+    return '' + val;
+  }
+}
+
 module.exports.repeat = repeat;
 module.exports.pad = pad;
 module.exports.camelcase = camelcase;
 module.exports.delimited = delimited;
 module.exports.home = home;
 module.exports.merge = merge;
+module.exports.native = native;
