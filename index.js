@@ -1,3 +1,5 @@
+var util = require('util');
+
 /**
  *  Repeat a string.
  *
@@ -46,11 +48,80 @@ function camelcase(name, delimiter) {
  *  if none of the environment variables are defined.
  */
 function home() {
-  return process.env.HOME || process.env.HOMEPATH
-    || process.env.USERPROFILE || '';
+  return process.env.HOME || process.env.HOMEPATH ||
+    process.env.USERPROFILE || '';
+}
+
+/**
+ *  Merge two complex objects recursively.
+ *
+ *  If either source or target are non-complex
+ *  (not an array or map) then nothing is done.
+ *
+ *  Otherwise all properties are merged from source
+ *  into target.
+ *
+ *  For arrays, iteration is done over the array
+ *  values so additional properties set on the array
+ *  are not copied over.
+ *
+ *  If a cyclical reference is detected this method
+ *  will throw an error.
+ *
+ *  @param source The source object.
+ *  @param target The target object.
+ *  @param filter An optional filter function.
+ */
+function merge(source, target, filter) {
+  filter = filter ||
+    function(target, key, value) {
+      target[key] = value;
+    };
+  function complex(o) {
+    return Array.isArray(o) || (o && (typeof(o) == 'object'));
+  }
+  if(!complex(source) || !complex(target)) return;
+  function create(source) {
+    if(typeof(source.clone) == 'function') return source.clone();
+    return Array.isArray(source) ? [] : {};
+  }
+  function recurse(source, target, key, value) {
+    if(complex(source[key])) {
+      if(source[key].__visited) {
+        untaint(source[key]);
+        throw new Error(util.format(
+          'Cyclical reference detected on %s, cannot merge', key));
+      }
+      filter(target, key, create(source[key]));
+      merge(source[key], target[key], filter);
+    }
+  }
+  function taint(source) { source.__visited = true; }
+  function untaint(source) { delete source.__visited; }
+  function iterate(source, target, key, value) {
+    taint(source);
+    filter(target, key, value);
+    try {
+      recurse(source, target, key, value);
+    }catch(e) {
+      untaint(source);
+      throw e;
+    }
+    untaint(source);
+  }
+  if(Array.isArray(source)) {
+    source.forEach(function(value, index, array) {
+      iterate(source, target, index, value);
+    });
+  }else{
+    for(var k in source) {
+      iterate(source, target, k, source[k]);
+    }
+  }
 }
 
 module.exports.repeat = repeat;
 module.exports.pad = pad;
 module.exports.camelcase = camelcase;
 module.exports.home = home;
+module.exports.merge = merge;
