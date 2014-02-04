@@ -5,6 +5,10 @@ var native = util.native;
 describe('cli-util:', function() {
 
   // to
+  it('should return non-string type', function(done) {
+    expect(native.to({})).to.eql({});
+    done();
+  });
   it('should convert to native true', function(done) {
     expect(native.to('true')).to.eql(true);
     done();
