@@ -143,6 +143,7 @@ function merge(source, target, filter) {
 
 var native = {
   to: function(str, delimiter, json) {
+    str = '' + str;
     if(str === 'true') return true;
     if(str === 'false') return false;
     if(str === 'null') return null;
@@ -152,7 +153,9 @@ var native = {
     if(str && delimiter && ~str.indexOf(delimiter)) {
       return str.split(delimiter);
     }
-    if(str && json) return JSON.parse(str);
+    if(str && json && /^["{\[]/.test(str)) {
+      return JSON.parse(str);
+    }
     return str;
   },
   from: function(val, delimiter, json) {
