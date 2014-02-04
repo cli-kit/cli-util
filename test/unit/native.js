@@ -37,6 +37,10 @@ describe('cli-util:', function() {
     expect(native.to('a,b,c', ',')).to.eql(['a', 'b', 'c']);
     done();
   });
+  it('should convert to native array (,)', function(done) {
+    expect(native.to('1,2,3', ',')).to.eql([1,2,3]);
+    done();
+  });
   it('should convert to native object (json)', function(done) {
     expect(native.to('{"arr":[1,2,3]}', null, true))
       .to.eql({arr: [1,2,3]});
