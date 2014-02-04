@@ -74,16 +74,21 @@ function home() {
  */
 function merge(source, target, filter) {
   filter = filter ||
-    function(target, key, value) {
+    function(target, key, value, source) {
+      if(Array.isArray(target[key]) && Array.isArray(source)) {
+        return target[key];
+      }else if(complex(target[key]) && complex(source)) {
+        return target[key];
+      }
       target[key] = value;
     };
   function complex(o) {
     return Array.isArray(o) || (o && (typeof(o) == 'object'));
   }
   if(!complex(source) || !complex(target)) return;
-  function create(source) {
+  function create(target, key, source) {
     if(typeof(source.clone) == 'function') return source.clone();
-    return Array.isArray(source) ? [] : {};
+    return Array.isArray(source) ? source.slice(0) : {};
   }
   function recurse(source, target, key, value) {
     if(complex(source[key])) {
@@ -92,7 +97,7 @@ function merge(source, target, filter) {
         throw new Error(util.format(
           'Cyclical reference detected on %s, cannot merge', key));
       }
-      filter(target, key, create(source[key]));
+      filter(target, key, create(target, key, source[key]), source[key]);
       merge(source[key], target[key], filter);
     }
   }
@@ -100,7 +105,7 @@ function merge(source, target, filter) {
   function untaint(source) { delete source.__visited; }
   function iterate(source, target, key, value) {
     taint(source);
-    filter(target, key, value);
+    filter(target, key, value, source[key]);
     try {
       recurse(source, target, key, value);
     }catch(e) {

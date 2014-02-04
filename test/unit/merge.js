@@ -16,6 +16,24 @@ describe('cli-util:', function() {
     expect(target).to.eql(null);
     done();
   });
+  it('should use existing array reference', function(done) {
+    var arr = [];
+    var source = {prop: [1,2,3]};
+    var target = {prop: arr};
+    merge(source, target);
+    expect(target.prop).to.eql(source.prop);
+    expect(target.prop).to.equal(arr);
+    done();
+  });
+  it('should use existing object reference', function(done) {
+    var obj = {a: 'a', b: 'b'};
+    var source = {prop: {a: 'a', b: 'b', c: 'c'}};
+    var target = {prop: obj};
+    merge(source, target);
+    expect(target.prop).to.eql(source.prop);
+    expect(target.prop).to.equal(obj);
+    done();
+  });
   it('should merge object into array', function(done) {
     var source = {str: 'string', num: 10};
     var target = [];
