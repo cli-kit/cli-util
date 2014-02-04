@@ -14,10 +14,16 @@ describe('cli-util:', function() {
     expect(res).to.eql('fileName');
     done();
   });
+  it('should return camelcase with underscore delimiter', function(done) {
+    var str = 'file_name';
+    var res = util.camelcase(str, '_');
+    expect(res).to.eql('fileName');
+    done();
+  });
   it('should return camelcase with leading delimiter', function(done) {
     var str = '--file-name';
     var res = util.camelcase(str);
     expect(res).to.eql('fileName');
     done();
   });
-})
+});
