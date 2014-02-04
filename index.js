@@ -150,11 +150,11 @@ var native = {
     if(str === 'undefined') return undefined;
     var num = Number(str);
     if(!isNaN(num)) return num;
-    if(str && delimiter && ~str.indexOf(delimiter)) {
-      return str.split(delimiter);
-    }
     if(str && json && /^["{\[]/.test(str)) {
       return JSON.parse(str);
+    }
+    if(str && delimiter && ~str.indexOf(delimiter)) {
+      return str.split(delimiter);
     }
     return str;
   },
