@@ -56,18 +56,6 @@ function delimited(name, delimiter, lower) {
 }
 
 /**
- *  Attempt to resolve the user's home directory
- *  in a platform independent manner.
- *
- *  @return The user's home directory or the empty string
- *  if none of the environment variables are defined.
- */
-function home() {
-  return process.env.HOME || process.env.HOMEPATH ||
-    process.env.USERPROFILE || '';
-}
-
-/**
  *  Merge two complex objects recursively.
  *
  *  If either source or target are non-complex
@@ -145,5 +133,4 @@ module.exports.repeat = repeat;
 module.exports.pad = pad;
 module.exports.camelcase = camelcase;
 module.exports.delimited = delimited;
-module.exports.home = home;
 module.exports.merge = merge;
