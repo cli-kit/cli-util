@@ -1,5 +1,43 @@
 var util = require('util');
 
+function ltrim(str) {
+  return str.replace(/^\s+/, '');
+}
+
+/**
+ *  Word wrap a long string.
+ *
+ *  @param str The string to wrap.
+ *  @param col The column to indent lines (first line is not indented).
+ *  @param amount The amount to wrap at.
+ */
+function wrap(str, col, amount) {
+  amount = amount || 80;
+  var over = str.length + col > amount;
+  var target = amount - col, parts = [];
+  var padding = repeat(col);
+  var words = str.split(' '), line = '', word;
+  function append(line) {
+    parts.push(
+      parts.length ? (col > 0 ? padding : '') + ltrim(line) : line);
+  }
+  if(over) {
+    for(var i = 0;i < words.length;i++) {
+      word = words[i];
+      if((line + ' ' + word).length <= target) {
+        line += line === '' ? word : ' ' + word;
+      }else{
+        append(line);
+        line = '';
+        i--;
+      }
+    }
+    if(line !== '') append(line);
+    return parts.join('\n').trim();
+  }
+  return str;
+}
+
 /**
  *  Repeat a string.
  *
@@ -134,3 +172,4 @@ module.exports.pad = pad;
 module.exports.camelcase = camelcase;
 module.exports.delimited = delimited;
 module.exports.merge = merge;
+module.exports.wrap = wrap;
