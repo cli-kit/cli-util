@@ -1,4 +1,4 @@
-# Utillity
+# Utility
 
 Utility functions for the cli toolkit.
 
