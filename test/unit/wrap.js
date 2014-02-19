@@ -4,7 +4,7 @@ var util = require('../..');
 describe('cli-util:', function() {
   it('should leave short string untouched', function(done) {
     var str = 'I have a dream';
-    var res = util.wrap(str, 0, 80);
+    var res = util.wrap(str, 0);
     var expected = 'I have a dream';
     expect(res).to.eql(expected);
     done();
@@ -35,4 +35,27 @@ describe('cli-util:', function() {
     expect(res).to.eql(expected);
     done();
   });
+  it('should word wrap word that equals target length', function(done) {
+    var str = util.repeat(80, 'x');
+    var res = util.wrap(str, 0, 80);
+    expect(res).to.eql(str);
+    done();
+  });
+  it('should word wrap word that exceeds target length', function(done) {
+    var str = util.repeat(120, 'x');
+    var expected = util.repeat(79, 'x') + '-' + '\n' + util.repeat(41, 'x')
+    var res = util.wrap(str, 0, 80);
+    expect(res).to.eql(expected);
+    done();
+  });
+  it('should word wrap multiple words that equals target length',
+    function(done) {
+      var x = util.repeat(80, 'x');
+      var expected = [x,x,x].join('\n');
+      var str = [x,x,x].join(' ');
+      var res = util.wrap(str, 0, 80);
+      expect(res).to.eql(expected);
+      done();
+    }
+  );
 })

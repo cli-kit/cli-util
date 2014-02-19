@@ -22,8 +22,23 @@ function wrap(str, col, amount) {
       parts.length ? (col > 0 ? padding : '') + ltrim(line) : line);
   }
   if(over) {
-    for(var i = 0;i < words.length;i++) {
+    var i, l = words.length;
+    for(i = 0;i < l;i++) {
       word = words[i];
+      // hyphenate long words that exceed
+      // the target length limit
+      if(word.length >= target) {
+        if(word.length === target) {
+          append(word);
+        }else{
+          line = word.substr(0, target - 1) + '-';
+          words.splice(i + 1, 0, word.substr(target - 1));
+          append(line);
+          line = '';
+          l++;
+        }
+        continue;
+      }
       if((line + ' ' + word).length <= target) {
         line += line === '' ? word : ' ' + word;
       }else{
