@@ -60,7 +60,7 @@ function wrap(str, col, amount) {
  *  @param str The string to repeat, default is a space.
  */
 function repeat(len, str) {
-  len = len || 2;
+  len = typeof len !== 'number' ? 2 : len;
   return new Array(len + 1).join(str || ' ');
 }
 

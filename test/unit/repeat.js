@@ -17,4 +17,9 @@ describe('cli-util:', function() {
     expect(res).to.eql('xxxx');
     done();
   });
+  it('should repeat char x0', function(done) {
+    var res = util.repeat(0);
+    expect(res).to.eql('');
+    done();
+  });
 })
