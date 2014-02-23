@@ -19,10 +19,12 @@ function wrap(str, col, amount, first) {
     throw new TypeError('Wrap cannot operate on NaN ' +
       (isNaN(col) ? 'column' : 'amount'));
   }
-  amount = parseInt(amount) || 80;
+  amount = Math.abs(parseInt(amount)) || 80;
   amount = Math.max(amount, 2);
   col = parseInt(col) || 0;
   col = Math.max(col, 0);
+  // guard against infinite loop if amount is less then column
+  amount = Math.max(amount, col + 2);
   var padding = repeat(col);
   var target = amount - col;
   function block(str) {
@@ -91,6 +93,8 @@ function wrap(str, col, amount, first) {
  */
 function repeat(len, str) {
   len = typeof len !== 'number' ? 2 : len;
+  len = Math.abs(len);
+  len = Math.max(len, -1);
   return new Array(len + 1).join(str || ' ');
 }
 

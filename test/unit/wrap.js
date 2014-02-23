@@ -139,4 +139,13 @@ describe('cli-util:', function() {
     expect(res).to.eql(expected);
     done();
   });
+  it('should not enter infinite loop on amount less than column',
+    function(done) {
+    var str = util.repeat(120, 'x');
+    var res = util.wrap(str, 20, -12, false);
+    // funky output here
+    //console.dir(res);
+    done();
+    }
+  );
 })

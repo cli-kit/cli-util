@@ -22,4 +22,9 @@ describe('cli-util:', function() {
     expect(res).to.eql('');
     done();
   });
+  it('should repeat char -4', function(done) {
+    var res = util.repeat(-4, 'x');
+    expect(res).to.eql('xxxx');
+    done();
+  });
 })
