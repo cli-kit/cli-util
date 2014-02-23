@@ -65,6 +65,16 @@ function repeat(len, str) {
 }
 
 /**
+ *  Convert the first character of a string to uppercase.
+ *
+ *  @param val The string value.
+ */
+function ucfirst(val) {
+  if(!val || !typeof val === 'string') return val;
+  return val.charAt(0).toUpperCase() + val.slice(1);
+}
+
+/**
  *  Pad a string with leading or trailing whitespace.
  *
  *  Default is to add trailing whitespace.
@@ -188,3 +198,4 @@ module.exports.camelcase = camelcase;
 module.exports.delimited = delimited;
 module.exports.merge = merge;
 module.exports.wrap = wrap;
+module.exports.ucfirst= ucfirst;
