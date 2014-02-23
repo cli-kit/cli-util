@@ -94,7 +94,6 @@ function wrap(str, col, amount, first) {
 function repeat(len, str) {
   len = typeof len !== 'number' ? 2 : len;
   len = Math.abs(len);
-  len = Math.max(len, -1);
   return new Array(len + 1).join(str || ' ');
 }
 
