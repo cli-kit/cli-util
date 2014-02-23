@@ -9,6 +9,13 @@ describe('cli-util:', function() {
     expect(res).to.eql(expected);
     done();
   });
+  it('should wrap with length 1 (prevent infinite loop)', function(done) {
+    var str = 'I have a dream';
+    var res = util.wrap(str, 0, 1);
+    var expected = 'h-\na-\nve\nd-\nr-\ne-\nam';
+    expect(res).to.eql(expected);
+    done();
+  });
   it('should word wrap long string', function(done) {
     var str = 'I have a dream that one day this nation will rise up and ';
     str += 'live out the true meaning of its creed: "We hold these truths '

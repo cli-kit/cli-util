@@ -13,6 +13,7 @@ function ltrim(str) {
  */
 function wrap(str, col, amount) {
   amount = amount || 80;
+  amount = Math.max(amount, 2);
   var over = str.length + col > amount;
   var target = amount - col, parts = [];
   var padding = repeat(col);
