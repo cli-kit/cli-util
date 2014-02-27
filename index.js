@@ -231,6 +231,19 @@ function merge(source, target, filter) {
   return target;
 }
 
+function pedantic(value, period) {
+  period = period || '.';
+  value = /[a-zA-Z0-9]$/.test(value) ? value + period : value
+  // sane if it ends with some common punctuation.
+  var sane = /[!?:;\.]([\*`]+)?$/.test(value);
+  if(!sane) {
+    // close on markdown inline formatters
+    value = /[^\.][\)\]\*`]+$/.test(value) ? value + period : value;
+  }
+  return value;
+}
+
+
 module.exports.repeat = repeat;
 module.exports.pad = pad;
 module.exports.camelcase = camelcase;
@@ -240,3 +253,4 @@ module.exports.wrap = wrap;
 module.exports.ucfirst= ucfirst;
 module.exports.ltrim = ltrim;
 module.exports.rtrim = rtrim;
+module.exports.pedantic = pedantic;
