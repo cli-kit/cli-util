@@ -2,7 +2,13 @@ var util = require('util');
 var eol = require('os').EOL;
 
 function ltrim(str) {
+  if(!str || typeof str !== 'string') return str;
   return str.replace(/^\s+/, '');
+}
+
+function rtrim(str) {
+  if(!str || typeof str !== 'string') return str;
+  return str.replace(/\s+$/, '');
 }
 
 /**
@@ -232,3 +238,5 @@ module.exports.delimited = delimited;
 module.exports.merge = merge;
 module.exports.wrap = wrap;
 module.exports.ucfirst= ucfirst;
+module.exports.ltrim = ltrim;
+module.exports.rtrim = rtrim;
