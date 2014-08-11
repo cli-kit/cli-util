@@ -255,7 +255,7 @@ function walk(root, visit, transform, visited) {
   for(k in root) {
     v = root[k];
     props = {parent: root, name: k, value: v};
-    if(v.__visited) {
+    if(complex(v) && v.__visited) {
       throw new Error('walk: cyclical reference detected');
     }
     if(visit(props)) {
@@ -269,8 +269,8 @@ function walk(root, visit, transform, visited) {
     }
     if(complex(v)) {
       walk(v, visit, transform, visited);
+      untaint(v);
     }
-    untaint(v);
   }
 }
 
