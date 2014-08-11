@@ -46,4 +46,19 @@ describe('cli-util:', function() {
     });
     done();
   });
+  it('should walk mixed', function(done) {
+    var obj = {a: new String('d'), b: new String('e'), c: [3, 4 ,5]};
+    walk(obj, function visit(props) {
+      return (props.value instanceof String);
+    }, function transform(props) {
+      expect(props.name).to.be.a('string');
+      expect(props.value).to.be.a('string');
+      props.value.visited = true;
+    });
+
+    expect(obj.a.visited).to.eql(true);
+    expect(obj.b.visited).to.eql(true);
+    expect(obj.c.visited).to.eql(undefined);
+    done();
+  });
 })
