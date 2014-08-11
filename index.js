@@ -1,3 +1,4 @@
+var assert = require('assert');
 var util = require('util');
 var eol = require('os').EOL;
 
@@ -157,6 +158,13 @@ function delimited(name, delimiter, lower) {
   return name;
 }
 
+function complex(o) {
+  return Array.isArray(o) || (o && (typeof(o) == 'object'));
+}
+
+function taint(source) { source.__visited = true; }
+function untaint(source) { delete source.__visited; }
+
 /**
  *  Merge two complex objects recursively.
  *
@@ -187,9 +195,6 @@ function merge(source, target, filter) {
       }
       target[key] = value;
     };
-  function complex(o) {
-    return Array.isArray(o) || (o && (typeof(o) == 'object'));
-  }
   if(!complex(source) || !complex(target)) return;
   function create(target, key, source) {
     if(typeof(source.clone) == 'function') return source.clone();
@@ -206,8 +211,6 @@ function merge(source, target, filter) {
       merge(source[key], target[key], filter);
     }
   }
-  function taint(source) { source.__visited = true; }
-  function untaint(source) { delete source.__visited; }
   function iterate(source, target, key, value) {
     taint(source);
     filter(target, key, value, source[key]);
@@ -243,6 +246,22 @@ function pedantic(value, period) {
   return value;
 }
 
+function walk(root, visit, transform) {
+  assert(typeof root === 'object', 'root must be an object');
+  assert(typeof visit === 'function', 'visit must be a function');
+  assert(typeof transform === 'function', 'transform must be a function');
+  var k, v, props;
+  for(k in root) {
+    v = root[k];
+    props = {parent: root, name: k, value: v};
+    if(visit(props)) {
+      transform(props);
+    }
+    if(complex(v)) {
+      walk(v, visit, transform);
+    }
+  }
+}
 
 module.exports.repeat = repeat;
 module.exports.pad = pad;
@@ -254,3 +273,4 @@ module.exports.ucfirst= ucfirst;
 module.exports.ltrim = ltrim;
 module.exports.rtrim = rtrim;
 module.exports.pedantic = pedantic;
+module.exports.walk = walk;
