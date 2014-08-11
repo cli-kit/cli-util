@@ -35,4 +35,15 @@ describe('cli-util:', function() {
     });
     done();
   });
+  it('should walk array', function(done) {
+    var obj = ['a', 'b', 'c'];
+    walk(obj, function visit(props) {
+      return true;
+    }, function transform(props) {
+      expect(props.parent).to.be.an('array');
+      expect(props.name).to.be.a('string');
+      expect(props.value).to.be.a('string');
+    });
+    done();
+  });
 })
