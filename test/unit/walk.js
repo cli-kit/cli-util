@@ -24,6 +24,16 @@ describe('cli-util:', function() {
     expect(fn).throws(Error);
     done();
   });
+  it('should error on cyclical reference', function(done) {
+    var a = {};
+    var b = {a: a};
+    a.b = b;
+    function fn() {
+      walk(b, function(props){return true}, function(props){});
+    }
+    expect(fn).throws(Error);
+    done();
+  });
   it('should walk object', function(done) {
     var obj = {a: 1, b: 2, c: 3};
     walk(obj, function visit(props) {
