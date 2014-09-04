@@ -12,6 +12,13 @@ function rtrim(str) {
   return str.replace(/\s+$/, '');
 }
 
+function uniq(a) {
+  var seen = {};
+  return a.filter(function(item) {
+    return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+  });
+}
+
 /**
  *  Word wrap a long string.
  *
@@ -276,6 +283,7 @@ function walk(root, visit, transform, visited) {
 
 module.exports.repeat = repeat;
 module.exports.pad = pad;
+module.exports.uniq = uniq;
 module.exports.camelcase = camelcase;
 module.exports.delimited = delimited;
 module.exports.merge = merge;
