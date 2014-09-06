@@ -190,15 +190,23 @@ function untaint(source) { delete source.__visited; }
  *
  *  @param source The source object.
  *  @param target The target object.
- *  @param filter An optional filter function.
+ *  @param options Options or filter function.
  */
-function merge(source, target, filter) {
+function merge(source, target, options) {
+  var filter;
+  if(typeof options === 'function') {
+    filter = options;
+    options = {};
+  }
+  options = options || {};
   filter = filter ||
     function(target, key, value, source) {
-      if(Array.isArray(target[key]) && Array.isArray(source)) {
-        return target[key];
-      }else if(complex(target[key]) && complex(source)) {
-        return target[key];
+      if(!options.copy) {
+        if(Array.isArray(target[key]) && Array.isArray(source)) {
+          return target[key];
+        }else if(complex(target[key]) && complex(source)) {
+          return target[key];
+        }
       }
       target[key] = value;
     };
@@ -214,8 +222,9 @@ function merge(source, target, filter) {
         throw new Error(util.format(
           'Cyclical reference detected on %s, cannot merge', key));
       }
-      filter(target, key, create(target, key, source[key]), source[key]);
-      merge(source[key], target[key], filter);
+      var val = create(target, key, source[key]);
+      filter(target, key, options.copy ? val : target[key], source[key]);
+      merge(source[key], options.copy ? val : target[key], options);
     }
   }
   function iterate(source, target, key, value) {

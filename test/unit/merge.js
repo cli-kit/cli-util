@@ -2,6 +2,15 @@ var expect = require('chai').expect;
 var merge = require('../..').merge;
 
 describe('cli-util:', function() {
+
+  it('should copy objects (copy option)', function(done) {
+    var source = {deep: {field: 'value'}};
+    var target = {};
+    merge(source, target, {copy: true});
+    expect(target.deep === source.deep).to.eql(false);
+    done();
+  });
+
   it('should ignore merge on non-complex (source)', function(done) {
     var source = false;
     var target = {};
@@ -115,4 +124,5 @@ describe('cli-util:', function() {
     expect(fn).throws(/Cyclical reference/);
     done();
   });
+
 });
