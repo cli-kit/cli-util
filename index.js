@@ -172,6 +172,21 @@ function complex(o) {
 function taint(source) { source.__visited = true; }
 function untaint(source) { delete source.__visited; }
 
+function recopy(input) {
+  var ptn = input.source;
+  var flags = "";
+  if(input.global) {
+    flags += "g";
+  }
+  if(input.ignoreCase) {
+    flags += "i";
+  }
+  if(input.multiline) {
+    flags += "m";
+  }
+  return new RegExp(ptn, flags);
+}
+
 /**
  *  Merge two complex objects recursively.
  *
@@ -213,7 +228,8 @@ function merge(source, target, options) {
   if(!complex(source) || !complex(target)) return;
   function create(target, key, source) {
     if(typeof(source.clone) == 'function') return source.clone();
-    return Array.isArray(source) ? source.slice(0) : {};
+    return Array.isArray(source) ? source.slice(0) :
+     ((source instanceof RegExp) ? recopy(source) : {});
   }
   function recurse(source, target, key, value) {
     if(complex(source[key])) {
@@ -301,4 +317,5 @@ module.exports.ucfirst= ucfirst;
 module.exports.ltrim = ltrim;
 module.exports.rtrim = rtrim;
 module.exports.pedantic = pedantic;
+module.exports.recopy = recopy;
 module.exports.walk = walk;
