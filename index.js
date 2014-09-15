@@ -165,6 +165,24 @@ function delimited(name, delimiter, lower) {
   return name;
 }
 
+/**
+ *  Check a message and optionally parameters array
+ *  for any newline characters.
+ */
+function hasNewline(msg, parameters) {
+  msg = msg || '';
+  parameters = parameters || [];
+  var newline = msg ? ~msg.indexOf('\n') : false, i;
+  if(newline) return newline;
+  // check parameters for a newline
+  for(i = 0;i < parameters.length;i++) {
+    if(/\n/.test(parameters[i])) {
+      newline = true; break;
+    }
+  }
+  return newline;
+}
+
 function complex(o) {
   return Array.isArray(o) || (o && (typeof(o) == 'object'));
 }
@@ -319,3 +337,4 @@ module.exports.rtrim = rtrim;
 module.exports.pedantic = pedantic;
 module.exports.recopy = recopy;
 module.exports.walk = walk;
+module.exports.hasNewline = hasNewline;
