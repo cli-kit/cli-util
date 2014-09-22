@@ -1,6 +1,7 @@
-var assert = require('assert');
-var util = require('util');
-var eol = require('os').EOL;
+var assert = require('assert')
+  , util = require('util')
+  , eol = require('os').EOL
+  , recopy = require('cli-regexp').copy;
 
 function ltrim(str) {
   if(!str || typeof str !== 'string') return str;
@@ -189,21 +190,6 @@ function complex(o) {
 
 function taint(source) { source.__visited = true; }
 function untaint(source) { delete source.__visited; }
-
-function recopy(input) {
-  var ptn = input.source;
-  var flags = "";
-  if(input.global) {
-    flags += "g";
-  }
-  if(input.ignoreCase) {
-    flags += "i";
-  }
-  if(input.multiline) {
-    flags += "m";
-  }
-  return new RegExp(ptn, flags);
-}
 
 /**
  *  Merge two complex objects recursively.

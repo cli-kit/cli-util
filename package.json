@@ -32,5 +32,8 @@
   "scripts": {
     "test": "istanbul cover _mocha -- -u bdd --recursive --reporter list -A test/unit/"
   },
-  "config": {}
+  "config": {},
+  "dependencies": {
+    "cli-regexp": "0.0.1"
+  }
 }
