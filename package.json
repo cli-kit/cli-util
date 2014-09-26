@@ -34,6 +34,6 @@
   },
   "config": {},
   "dependencies": {
-    "cli-regexp": "0.0.1"
+    "cli-regexp": "0.0.3"
   }
 }
